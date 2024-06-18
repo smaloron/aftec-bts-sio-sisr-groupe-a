@@ -1,0 +1,6 @@
+# mysql volumes
+mariadb/
+
+# seed files
+database/seed/
+!database/seed/.gitkeep

@@ -1,0 +1,46 @@
+
+services:
+  nginx:
+    container_name:  lemp-webserver-a
+    build:
+      context: .
+      dockerfile: nginx.dockerfile
+    ports:
+      - 8000:80
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - mariadb
+      - php
+  mariadb:
+    container_name: lemp-mariadb-a
+    image: mariadb:lts
+    restart: always
+    ports:
+      - 3300:3306
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: devuser
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - ./mariadb:/var/lib/mysql
+      #- ./database/schema/dbone.sql:/docker-entrypoint-initdb.d/schema.sql
+
+  php:
+    container_name: lemp-php-a
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    volumes:
+      - ./src:/var/www/html
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: lemp-phpmyadmin-a
+    environment:
+      PMA_HOST: lemp-mariadb-a
+      PMA_USER: root
+      PMA_PASSWORD: secret
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
