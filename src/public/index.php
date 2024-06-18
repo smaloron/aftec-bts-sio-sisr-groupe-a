@@ -1,5 +1,4 @@
 <?php
-var_dump($_POST);
 
     // Connexion à la base de données
     $dataSourceName = "mysql:host=lemp-mariadb-a;dbname=aftec;charset=utf8";
@@ -7,6 +6,23 @@ var_dump($_POST);
     $dbPassword = "secret";
 
     $pdo = new PDO($dataSourceName, $dbUser, $dbPassword);
+
+
+    // Test pour savoir si on a cliqué sur un bouton 
+    // dont l'attribut name est égal à "delete" 
+    $isDelete = filter_has_var(INPUT_POST, "delete");
+    if($isDelete){
+        // Récupération de l'id à supprimer
+        $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
+
+        // Requête de suppression
+        $sql = "DELETE FROM persons WHERE id=?";
+        $query = $pdo->prepare($sql);
+        $query->execute([$id]);
+
+        header("location:index.php");
+    }
+
 
     // Test pour savoir si les données ont été postées
     $isPosted = filter_has_var(INPUT_POST, "submit");
