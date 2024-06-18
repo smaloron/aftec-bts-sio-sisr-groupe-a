@@ -23,6 +23,25 @@
         header("location:index.php");
     }
 
+    // Test pour savoir si on a cliqué sur un bouton 
+    // dont l'attribut name est égal à "delete" 
+    $isEdit = filter_has_var(INPUT_POST, "edit");
+
+    if($isEdit){
+        // Récupération de l'id à modifier
+        $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
+
+        // Récupération des infos de la personne à modifier
+        $sql = "SELECT * FROM persons WHERE id = ?";
+        $query = $pdo->prepare($sql);
+        $query->execute([$id]);
+
+        $editedPerson = $query->fetch(PDO::FETCH_ASSOC);
+
+        //var_dump($person["person_name"]);
+
+    }
+
 
     // Test pour savoir si les données ont été postées
     $isPosted = filter_has_var(INPUT_POST, "submit");
@@ -32,6 +51,7 @@
         // Récupération de la saisie
         $name = filter_input(INPUT_POST, "personName", FILTER_SANITIZE_SPECIAL_CHARS);
         $gender = filter_input(INPUT_POST, "gender", FILTER_SANITIZE_SPECIAL_CHARS);
+        $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
 
         // Validation de la saisie
         // On part du principe que la saisie est valide 
@@ -47,12 +67,22 @@
         // Les données sont récupérées et validées
         // on peut donc enregistrer dans la base de données
         if($isValid){
-            // Les paramètres de la requête sont remplacés par des ?
-            $sql = "INSERT INTO persons (person_name, gender) VALUES (?,?)";
-            // Préparation de la requête
-            $query = $pdo->prepare($sql);
-            // Exécution de la requête
-            $query->execute([$name, $gender]);
+
+            if(empty($id)){
+                // Les paramètres de la requête sont remplacés par des ?
+                $sql = "INSERT INTO persons (person_name, gender) VALUES (?,?)";
+                // Préparation de la requête
+                $query = $pdo->prepare($sql);
+                // Exécution de la requête
+                $query->execute([$name, $gender]);
+            } else {
+                // Les paramètres de la requête sont remplacés par des ?
+                $sql = "UPDATE persons SET person_name=? , gender=? WHERE id = ?";
+                // Préparation de la requête
+                $query = $pdo->prepare($sql);
+                // Exécution de la requête
+                $query->execute([$name, $gender, $id]);
+            }
             
             // Redirection vers la page pour sortir de la méthode post
             header("location:index.php");
@@ -153,17 +183,22 @@
         <form method="post">
             <div>
                 <label>Nom</label>
-                <input type="text" name="personName">
+                <input type="text" name="personName" 
+                value="<?=isset($editedPerson)?$editedPerson["person_name"]:""?>">
             </div>
 
             <div>
-                <input type="radio" name="gender" value="féminin" id="radioF">
+                <input type="radio" name="gender" value="féminin" id="radioF" 
+                <?=isset($editedPerson) && $editedPerson["gender"]=="féminin"?"checked":""?> >
                 <label for="radioF">Femme</label>
 
-                <input type="radio" name="gender" value="masculin" id="radioM">
+                <input type="radio" name="gender" value="masculin" id="radioM"
+                <?=isset($editedPerson) && $editedPerson["gender"]=="masculin"?"checked":""?> 
+                >
                 <label for="radioM">Homme</label>
             </div>
-
+            <input type="hidden" name="id" 
+            value="<?=isset($editedPerson)? $editedPerson["id"]: "" ?>">
             <button type="submit" name="submit">Valider</button>
 
         </form>
@@ -176,6 +211,7 @@
             <th>Nom</th>
             <th>Genre</th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -184,8 +220,15 @@
                     <td><?= $item["person_name"]; ?></td>
                     <td><?= $item["gender"]; ?></td>
                     <td>
-                        <form method="post">
+                        <form method="post" onsubmit="return confirm('Voulez vous vraiment supprimer')">
                             <button type="submit" name="delete">Supprimer</button>
+                            <input type="hidden" name="id" value="<?=$item["id"];?>">
+                        </form>
+                    </td>
+
+                    <td>
+                        <form method="post">
+                            <button type="submit" name="edit">Modifier</button>
                             <input type="hidden" name="id" value="<?=$item["id"];?>">
                         </form>
                     </td>
