@@ -38,6 +38,18 @@ function handleUserRegistration($pdo){
         }
     }
 
+    // Le formulaire est valide on peut insérer les données
+    if(count($errors) == 0){
+        $sql = "INSERT INTO users (username, userfullname, userpass) VALUES (?,?,?)";
+        $query = $pdo->prepare($sql);
+        $query->execute([
+            $userName, $userFullName, 
+            password_hash($userPass, PASSWORD_DEFAULT)
+        ]);
+
+        header("location:index.php");
+    }
+
 
     return $errors;
 }
