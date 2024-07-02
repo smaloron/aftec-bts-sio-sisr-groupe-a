@@ -5,8 +5,6 @@ require "../model/users.php";
 $pdo = getPDO();
 
 $errors = handleUserRegistration($pdo);
-
-var_dump($errors);
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +34,20 @@ var_dump($errors);
     </style>
 </head>
 <body>
+
+
+
 <div id="form">
+
+    <?php if(count($errors) > 0): ?>
+        <h3>Veuillez corriger les erreurs suivantes : </h3>
+        <ul>
+            <?php foreach($errors as $item): ?>
+                <li> <?=$item ?> </li>
+            <?php endforeach ?>
+        </ul>
+    <?php endif ?>
+
     <div class="form-widget">
         <span></span>
         <h1>Inscription</h1>
