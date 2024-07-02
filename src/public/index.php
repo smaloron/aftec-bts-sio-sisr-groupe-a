@@ -79,6 +79,8 @@
                 </li>
             </ul>
             <?php endif ?>
+
+            <a href="secure.php">Secure</a>
         </nav>
         
 
