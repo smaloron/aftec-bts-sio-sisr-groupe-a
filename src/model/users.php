@@ -83,6 +83,7 @@ function handleUserLogin($pdo){
             $user = $query->fetch(PDO::FETCH_ASSOC);
 
             if($user && password_verify($plainPassword, $user["userpass"])){
+                session_regenerate_id(true);
                 $_SESSION["message"] = "Félicitations vous êtes authentifié(e)";
                 $_SESSION["userId"] = $user["id"];
                 $_SESSION["userFullName"] = $user["userfullname"];

@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
     // Inclusion de la connexion à la base données
     require "../model/database.php";
 
@@ -63,6 +65,11 @@
 <body>
 
         <nav>
+            <?php if(isset($_SESSION["userId"])): ?>
+                <h3>Bonjour <?=$_SESSION["userFullName"] ?> </h3>
+                <a href="logout.php">Déconnexion</a>
+
+            <?php else : ?>
             <ul>
                 <li>
                     <a href="register.php">Inscription</a>
@@ -71,7 +78,9 @@
                     <a href="login.php">Connexion</a>
                 </li>
             </ul>
-        </nav
+            <?php endif ?>
+        </nav>
+        
 
     <h2>Liste des noms</h2>
     <ul>
