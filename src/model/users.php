@@ -36,20 +36,22 @@ function handleUserRegistration($pdo){
         } else if($userPass != $userPassConfirm){
             array_push($errors, "Le mot de passe et sa confirmation doivent être identiques");
         }
+
+        // Le formulaire est valide on peut insérer les données
+        if(count($errors) == 0){
+            $sql = "INSERT INTO users (username, userfullname, userpass) VALUES (?,?,?)";
+            $query = $pdo->prepare($sql);
+            $query->execute([
+                $userName, $userFullName, 
+                password_hash($userPass, PASSWORD_DEFAULT)
+            ]);
+
+            // Enregistrement d'un message dans la session 
+            // Pour pouvoir le lire dans la page login.php
+            $_SESSION["message"] = "Vous êtes inscrit, vous pouvez désormais vous connecter";
+
+            header("location:login.php");
+        }
     }
-
-    // Le formulaire est valide on peut insérer les données
-    if(count($errors) == 0){
-        $sql = "INSERT INTO users (username, userfullname, userpass) VALUES (?,?,?)";
-        $query = $pdo->prepare($sql);
-        $query->execute([
-            $userName, $userFullName, 
-            password_hash($userPass, PASSWORD_DEFAULT)
-        ]);
-
-        header("location:index.php");
-    }
-
-
     return $errors;
 }

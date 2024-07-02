@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require "../model/database.php";
 require "../model/users.php";
 
@@ -32,6 +34,15 @@ $errors = [];
             min-width: 500px;
             margin: 15px auto;
         }
+
+        .message {
+            background: #DDAAEE;
+            border-radius: 10px;
+            text-align: center;
+            margin: auto;
+            width: 80%;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -39,6 +50,14 @@ $errors = [];
 
 
 <div id="form">
+
+<?php if(isset($_SESSION["message"])): ?>
+    <div class="message">
+        <?= $_SESSION["message"] ?>
+    </div>
+
+    <?php unset($_SESSION["message"]) ?>
+<?php endif ?>
 
     <?php if(count($errors) > 0): ?>
         <h3>Veuillez corriger les erreurs suivantes : </h3>
