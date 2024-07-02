@@ -15,3 +15,11 @@ INSERT INTO persons (person_name, gender) VALUES
 ('Sabine Weiss', 'féminin'),
 ('Isadora Duncan', 'féminin'),
 ('Isaac Asimov', 'masculin');
+
+CREATE TABLE users (
+    id INT UNSIGNED AUTO_INCREMENT,
+    username VARCHAR(20) NOT NULL,
+    userpass VARCHAR(64) NOT NULL,
+    userfullname VARCHAR(20) NOT NULL,
+    PRIMARY KEY (id)
+);
