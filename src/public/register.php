@@ -1,3 +1,14 @@
+<?php
+require "../model/database.php";
+require "../model/users.php";
+
+$pdo = getPDO();
+
+$errors = handleUserRegistration($pdo);
+
+var_dump($errors);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
