@@ -55,3 +55,47 @@ function handleUserRegistration($pdo){
     }
     return $errors;
 }
+
+function handleUserLogin($pdo){
+
+    $errors = [];
+
+    $isPosted = filter_has_var(INPUT_POST, "submit");
+
+    if($isPosted){
+        // Récupération de la saisie
+        $login = filter_input(INPUT_POST, "userName", FILTER_SANITIZE_SPECIAL_CHARS);
+        $plainPassword = filter_input(INPUT_POST, "userPass", FILTER_DEFAULT);
+
+        // Validation de la saisie
+        if(trim($login) == ""){
+            array_push($errors, "Vous devez indiquer votre identifiant");
+        }
+        if(trim($plainPassword) == ""){
+            array_push($errors, "Vous devez indiquer votre mot de passe");
+        }
+
+        if(count($errors) == 0){
+            // On récupère les infos de l'utilisateur depuis la base de données
+            $sql = "SELECT * FROM users WHERE username=?";
+            $query = $pdo->prepare($sql);
+            $query->execute([$login]);
+            $user = $query->fetch(PDO::FETCH_ASSOC);
+
+            if($user && password_verify($plainPassword, $user["userpass"])){
+                $_SESSION["message"] = "Félicitations vous êtes authentifié(e)";
+                $_SESSION["userId"] = $user["id"];
+                $_SESSION["userFullName"] = $user["userfullname"];
+
+                header("location:index.php");
+
+            } else {
+                $errors = ["Vérifier vos infos de connexion"];
+            }
+        }
+    }
+
+    return $errors;
+
+}
+

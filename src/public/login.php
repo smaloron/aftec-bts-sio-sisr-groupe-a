@@ -6,8 +6,8 @@ require "../model/users.php";
 
 $pdo = getPDO();
 
-$errors = [];
-//$errors = handleUserRegistration($pdo);
+
+$errors = handleUserLogin($pdo);
 ?>
 
 <!DOCTYPE html>
