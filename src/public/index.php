@@ -1,11 +1,9 @@
 <?php
+    // Inclusion de la connexion à la base données
+    require "../model/database.php";
 
     // Connexion à la base de données
-    $dataSourceName = "mysql:host=lemp-mariadb-a;dbname=aftec;charset=utf8";
-    $dbUser = "devuser";
-    $dbPassword = "secret";
-
-    $pdo = new PDO($dataSourceName, $dbUser, $dbPassword);
+    $pdo = getPDO();
 
 
     // Test pour savoir si on a cliqué sur un bouton 
