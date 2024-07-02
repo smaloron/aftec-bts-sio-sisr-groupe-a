@@ -7,15 +7,13 @@
     // Connexion à la base de données
     $pdo = getPDO();
 
-    handlePersonDelete();
+    handlePersonDelete($pdo);
 
-    handlePersonEdit();
+    handlePersonEdit($pdo);
 
-    handlePersonInsert();
+    handlePersonInsert($pdo);
 
     
-
-
     // Exécution d'une requête sur la base de données
     $query = $pdo->query("SELECT * FROM persons");
 

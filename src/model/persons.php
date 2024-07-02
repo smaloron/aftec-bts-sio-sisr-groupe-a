@@ -1,6 +1,6 @@
 <?php
 
-function handlePersonDelete(){
+function handlePersonDelete($pdo){
     // Test pour savoir si on a cliqué sur un bouton 
     // dont l'attribut name est égal à "delete" 
     $isDelete = filter_has_var(INPUT_POST, "delete");
@@ -17,7 +17,7 @@ function handlePersonDelete(){
     }
 }
 
-function handlePersonEdit(){
+function handlePersonEdit($pdo){
     // Test pour savoir si on a cliqué sur un bouton 
     // dont l'attribut name est égal à "delete" 
     $isEdit = filter_has_var(INPUT_POST, "edit");
@@ -38,7 +38,7 @@ function handlePersonEdit(){
     }
 }
 
-function handlePersonInsert(){
+function handlePersonInsert($pdo){
     // Test pour savoir si les données ont été postées
     $isPosted = filter_has_var(INPUT_POST, "submit");
 
