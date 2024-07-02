@@ -61,6 +61,15 @@
     </style>
 </head>
 <body>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="register.php">Inscription</a>
+                </li>
+            </ul>
+        </nav
+
     <h2>Liste des noms</h2>
     <ul>
         <?php foreach($names as $item): ?>
