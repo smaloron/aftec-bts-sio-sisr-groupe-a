@@ -33,6 +33,23 @@ $errors = handleTaskInsert($pdo);
         }
         
     </style>
+
+    <script>
+
+        window.onload = function(){
+            const doneBoxes = document.querySelectorAll(".task input");
+            for(let item of doneBoxes){
+                item.addEventListener("change", function(event){
+                    const data = {
+                        done: event.target.checked,
+                        id: event.target.value
+                    };
+                    console.log(data);
+                });
+            }
+        }
+        
+    </script>
 </head>
 <body>
     <h1>Les tâches de <?= $_SESSION["userFullName"] ?></h1>
@@ -48,7 +65,8 @@ $errors = handleTaskInsert($pdo);
 
     <?php foreach($taskList as $task): ?>
         <div class="task">
-            <input type="checkbox" <?=$task["done"]?"checked":"" ?> >
+            <input type="checkbox" <?=$task["done"]?"checked":"" ?> 
+            value="<?= $task["id"] ?>">
             <h4><?= $task["taskname"] ?></h4>
         </div>
     <?php endforeach ?>
