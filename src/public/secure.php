@@ -44,7 +44,19 @@ $errors = handleTaskInsert($pdo);
                         done: event.target.checked,
                         id: event.target.value
                     };
-                    console.log(data);
+                    let url = 'update_task_status.php?';
+                    url += "id="+data.id+"&done="+data.done; 
+                   const call =  fetch(url);
+
+                    call.then(function(response){
+                        console.log(response);
+                        response.text().then((text)=> console.log(text));
+                    })
+                    .catch(function(error){
+                        console.log(error);
+                        alert('Impossible de réaliser cette opération');
+                    });
+
                 });
             }
         }
