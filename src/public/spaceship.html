@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spaceship</title>
+    <style>
+        #spaceship {
+            width:15%;
+            position: absolute;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            const spaceship = {
+                x: 100,
+                y: 300,
+                rotation: 0,
+                speed: 5,
+                target: document.getElementById("spaceship"),
+
+                show: function(){
+                    this.target.style.left = this.x+"px";
+                    this.target.style.top = this.y+"px";
+                    this.target.style.transform = "rotate("+this.rotation+"deg)";
+                }, 
+                
+                move: function(){
+                    let rad = this.rotation * Math.PI / 180 ;
+                    this.x += Math.cos(rad) * this.speed;
+                    this.y += Math.sin(rad) * this.speed;
+                }
+            }
+
+            window.onkeydown = function(ev){
+                    console.log(ev);
+                    if(ev.key == "ArrowUp"){
+                        spaceship.rotation += 5;
+                    }
+                    if(ev.key == "ArrowDown"){
+                        spaceship.rotation -= 5;
+                    }
+
+                    // Barre d'espace
+                    if(ev.key == " "){
+                        spaceship.move();
+                    }
+
+                    // augmenter réduire la vitesse
+                    if(ev.key == "ArrowLeft"){
+                        spaceship.speed = Math.max(0, --spaceship.speed);
+                        document.getElementById("speed").innerHTML = spaceship.speed;
+                    
+                    }
+                    if(ev.key == "ArrowRight"){
+                        spaceship.speed = Math.min(20, ++spaceship.speed);
+                        document.getElementById("speed").innerHTML = spaceship.speed;
+                    }
+
+                    spaceship.show();
+            }
+
+            spaceship.show();
+        }
+    </script>
+</head>
+<body>
+    <div id="speed"></div>
+
+    <img src="img/spaceship.png" id="spaceship">
+    
+</body>
+</html>
