@@ -1,7 +1,10 @@
 <?php
 
 function getTasksById(int $id, PDO $pdo){
-    $sql = "SELECT * FROM tasks WHERE user_id = ?";
+    $sql = "SELECT tasks.id, taskname, done, projects.name as project
+            FROM tasks LEFT JOIN projects 
+            ON project_id = projects.id 
+            WHERE user_id = ?";
     $query = $pdo->prepare($sql);
     $query->execute([$id]);
     return $query->fetchAll(PDO::FETCH_ASSOC);

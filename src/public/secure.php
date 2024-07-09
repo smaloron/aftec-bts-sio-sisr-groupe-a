@@ -79,7 +79,12 @@ $errors = handleTaskInsert($pdo);
         <div class="task">
             <input type="checkbox" <?=$task["done"]?"checked":"" ?> 
             value="<?= $task["id"] ?>">
-            <h4><?= $task["taskname"] ?></h4>
+            <h4>
+                <?= $task["taskname"] ?> 
+                <?php if($task["project"]): ?>
+                    (<?=$task["project"] ?>)
+                <?php endif ?>
+            </h4>
         </div>
     <?php endforeach ?>
 
