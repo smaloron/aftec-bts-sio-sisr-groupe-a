@@ -1,10 +1,22 @@
 <?php
 session_start();
 
+require "../model/tasks.php";
+require "../model/database.php";
+
 if(! isset($_SESSION["userId"])){
     $_SESSION["message"] = "Vous devez vous authentifier pour accèder à l'espace privé";
     header("location:login.php");
 }
+
+$pdo = getPDO();
+
+// Récupération des tâches de l'utilisateur connecté
+$taskList = getTasksById($_SESSION["userId"], $pdo);
+
+//gestion de l'ajout de tâche
+$errors = handleTaskInsert($pdo);
+
 ?>
 
 <!DOCTYPE html>
@@ -13,9 +25,35 @@ if(! isset($_SESSION["userId"])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page sécurisée</title>
+    <style>
+        .task {
+            display: grid;
+            grid-template-columns: 50px 1fr;
+            vertical-align: top;
+        }
+        
+    </style>
 </head>
 <body>
-    <h1>Vous êtes dans un espace privé</h1>
+    <h1>Les tâches de <?= $_SESSION["userFullName"] ?></h1>
+
+    <?php include "fragments/_errors.php" ?>
+
+    <div id="form">
+        <form method="post">
+            <input type="text" name="taskName" placeholder="Votre nouvelle tâche ici">
+            <button name="submit">Valider</button>
+        </form>
+    </div>
+
+    <?php foreach($taskList as $task): ?>
+        <div class="task">
+            <input type="checkbox" <?=$task["done"]?"checked":"" ?> >
+            <h4><?= $task["taskname"] ?></h4>
+        </div>
+    <?php endforeach ?>
+
+
     
 </body>
 </html>

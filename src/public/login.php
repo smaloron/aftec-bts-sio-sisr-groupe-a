@@ -59,15 +59,8 @@ $errors = handleUserLogin($pdo);
     <?php unset($_SESSION["message"]) ?>
 <?php endif ?>
 
-    <?php if(count($errors) > 0): ?>
-        <h3>Veuillez corriger les erreurs suivantes : </h3>
-        <ul>
-            <?php foreach($errors as $item): ?>
-                <li> <?=$item ?> </li>
-            <?php endforeach ?>
-        </ul>
-    <?php endif ?>
-
+    <?php include "fragments/_errors.php" ?>
+       
     <div class="form-widget">
         <span></span>
         <h1>Connexion</h1>
