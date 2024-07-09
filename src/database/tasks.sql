@@ -15,3 +15,16 @@ VALUES
 ('Tuer l\'hydre de Lerne', 1, 0),
 ('Copier l'Internet sur ma clef usb', 2, 0),
 ('Prendre un café ce matin', 2, 1);
+
+ALTER TABLE tasks ADD CONSTRAINT task_to_user
+FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE;
+
+-- Les requêtes
+
+SELECT * FROM tasks, users 
+WHERE user_id = users.id;
+
+SELECT * 
+FROM tasks INNER JOIN users 
+                ON user_id = users.id
+WHERE done = 0;
