@@ -29,3 +29,9 @@ function handleTaskInsert(PDO $pdo){
 
     return $errors;
 }
+
+function updateTaskById(int $id, bool $done,PDO $pdo){
+    $sql = "UPDATE tasks SET done=? WHERE id = ?";
+    $query = $pdo->prepare($sql);
+    $query->execute([$done, $id]);
+}
